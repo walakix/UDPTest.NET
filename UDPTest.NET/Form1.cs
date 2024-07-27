@@ -17,7 +17,9 @@ namespace UDPTest.NET
 {
     public partial class Form1 : Form
     {
-        Thread thdUDPServer;
+        //Thread thdUDPServer;
+        bool thRun=false;
+
 
         public Form1()
         {
@@ -26,6 +28,7 @@ namespace UDPTest.NET
 
         private void btnExit_Click(object sender, EventArgs e)
         {
+            if (thRun) { UDPServerStop(); }
             Close();
         }
 
@@ -41,33 +44,46 @@ namespace UDPTest.NET
 
         private void btnSend_Click(object sender, EventArgs e)
         {
-            UDPSend("-");
+            UDPSend(tbMessage.Text);
         }
 
 
         public void UDPServerThread()
         {
             UdpClient udpClient = new UdpClient((int)numServerPort.Value);
-            while (true)
+            while (thRun)
             {
                 IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
                 Byte[] receiveBytes = udpClient.Receive(ref RemoteIpEndPoint);
-                string returnData = Encoding.ASCII.GetString(receiveBytes);
-                WriteLog(RemoteIpEndPoint.Address.ToString()
-                                        + ":" + returnData.ToString());
+                string returnData = Encoding.UTF8.GetString(receiveBytes);
+                if (returnData=="QUIT_EndThread")
+                {
+                    
+                } 
+                else
+                {
+                    WriteLog(RemoteIpEndPoint.Address.ToString()
+                                            + ": " + returnData.ToString());
+                }
             }
-            //udpClient.Close();
+            udpClient.Close();
+            udpClient.Dispose();
+            //udpClient = null;
         }
 
         private void WriteLog(string msg)
         {
             lbLog.Invoke((MethodInvoker)(() => lbLog.Items.Add(msg)));
+            lbLog.Invoke((MethodInvoker)(() => lbLog.SelectedIndex= lbLog.Items.Count-1));
+            lbLog.Invoke((MethodInvoker)(() => lbLog.ClearSelected()));
         }
 
         private void UDPServerStart()
         {
-            thdUDPServer = new Thread(new ThreadStart(UDPServerThread));
+            Thread thdUDPServer = new Thread(new ThreadStart(UDPServerThread));
+            thRun = true;
             thdUDPServer.Start();
+            
             btnStart.Enabled = false; 
             numServerPort.Enabled = false;
             btnStop.Enabled=true;
@@ -75,8 +91,15 @@ namespace UDPTest.NET
 
         private void UDPServerStop()
         {
-            thdUDPServer.Abort();
-            thdUDPServer=null;
+            thRun = false;
+            //thdUDPServer.Abort();
+            UdpClient sender2 = new UdpClient();
+            string endMsg = "QUIT_EndThread";
+            sender2.Send(Encoding.UTF8.GetBytes(endMsg), endMsg.Length, "127.0.0.1", (int)numServerPort.Value);
+            sender2.Close();
+
+            //UDPSend("QUIT_EndThread");
+
             btnStart.Enabled = true;
             numServerPort.Enabled = true;
             btnStop.Enabled = false;
@@ -85,7 +108,7 @@ namespace UDPTest.NET
         private void UDPSend(string msg)
         {
             UdpClient sender1 = new UdpClient();
-            sender1.Send(Encoding.UTF8.GetBytes(tbMessage.Text), 3, tbDestIP.Text, (int)numDestPort.Value);
+            sender1.Send(Encoding.UTF8.GetBytes(msg), msg.Length, tbDestIP.Text, (int)numDestPort.Value);
             sender1.Close();
         }
     }
