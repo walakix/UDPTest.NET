@@ -1,0 +1,10 @@
+C:\Users\Walaki\source\repos\UDPTest.NET\UDPTest.NET\bin\Debug\UDPTest.NET.exe.config
+C:\Users\Walaki\source\repos\UDPTest.NET\UDPTest.NET\bin\Debug\UDPTest.NET.exe
+C:\Users\Walaki\source\repos\UDPTest.NET\UDPTest.NET\bin\Debug\UDPTest.NET.pdb
+C:\Users\Walaki\source\repos\UDPTest.NET\UDPTest.NET\obj\Debug\UDPTest.NET.csproj.AssemblyReference.cache
+C:\Users\Walaki\source\repos\UDPTest.NET\UDPTest.NET\obj\Debug\UDPTest.NET.Form1.resources
+C:\Users\Walaki\source\repos\UDPTest.NET\UDPTest.NET\obj\Debug\UDPTest.NET.Properties.Resources.resources
+C:\Users\Walaki\source\repos\UDPTest.NET\UDPTest.NET\obj\Debug\UDPTest.NET.csproj.GenerateResource.cache
+C:\Users\Walaki\source\repos\UDPTest.NET\UDPTest.NET\obj\Debug\UDPTest.NET.csproj.CoreCompileInputs.cache
+C:\Users\Walaki\source\repos\UDPTest.NET\UDPTest.NET\obj\Debug\UDPTest.NET.exe
+C:\Users\Walaki\source\repos\UDPTest.NET\UDPTest.NET\obj\Debug\UDPTest.NET.pdb
